@@ -35,6 +35,7 @@
         if (!$block = $DB->get_record('block', array('id'=>$hide))) {
             print_error('blockdoesnotexist', 'error');
         }
+        add_to_config_log('block_visibility', $block->visible, '0', $block->name);
         $DB->set_field('block', 'visible', '0', array('id'=>$block->id));      // Hide block
         core_plugin_manager::reset_caches();
         admin_get_root(true, false);  // settings not required - only pages
@@ -44,6 +45,7 @@
         if (!$block = $DB->get_record('block', array('id'=>$show))) {
             print_error('blockdoesnotexist', 'error');
         }
+        add_to_config_log('block_visibility', $block->visible, '1', $block->name);
         $DB->set_field('block', 'visible', '1', array('id'=>$block->id));      // Show block
         core_plugin_manager::reset_caches();
         admin_get_root(true, false);  // settings not required - only pages
@@ -63,6 +65,7 @@
         }
         if (!in_array($block->name, $undeletableblocktypes)) {
             $undeletableblocktypes[] = $block->name;
+            add_to_config_log('block_protect', $unprotect, $protect, $block->name);
             set_config('undeletableblocktypes', implode(',', $undeletableblocktypes));
         }
         admin_get_root(true, false);  // settings not required - only pages
@@ -74,6 +77,7 @@
         }
         if (in_array($block->name, $undeletableblocktypes)) {
             $undeletableblocktypes = array_diff($undeletableblocktypes, array($block->name));
+            add_to_config_log('block_protect', $unprotect, $protect, $block->name);
             set_config('undeletableblocktypes', implode(',', $undeletableblocktypes));
         }
         admin_get_root(true, false);  // settings not required - only pages
