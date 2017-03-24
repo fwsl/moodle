@@ -28,7 +28,7 @@ require_once($CFG->dirroot . '/mod/wiki/pagelib.php');
 // page editing page.
 $action = optional_param('action', 'new', PARAM_TEXT);
 // The title of the new page, can be empty
-$title = optional_param('title', get_string('newpage', 'wiki'), PARAM_TEXT);
+$title = optional_param('title', 0, PARAM_TEXT);
 $wid = optional_param('wid', 0, PARAM_INT);
 $swid = optional_param('swid', 0, PARAM_INT);
 $group = optional_param('group', 0, PARAM_INT);
