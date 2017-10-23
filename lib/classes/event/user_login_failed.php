@@ -24,6 +24,8 @@
 
 namespace core\event;
 
+use stdClass;
+
 defined('MOODLE_INTERNAL') || die();
 
 /**
@@ -69,22 +71,22 @@ class user_login_failed extends base {
      */
     public function get_description() {
         // Note that username could be any random user input.
-        $username = s($this->other['username']);
-        $reasonid = $this->other['reason'];
-        $loginfailed = 'Login failed for the username';
-        switch ($reasonid){
+        $data = new stdClass();
+        $data->username = s($this->other['username']);
+        $data->reasonid = $this->other['reason'];
+        switch ($this->other['reason']){
             case 1:
-                return $loginfailed." '{$username}'. User does not exist (id '{$reasonid}').";
+                return get_string('login_failed_no_user', 'auth', $data);
             case 2:
-                return $loginfailed." '{$username}'. User is suspended (id '{$reasonid}').";
+                return get_string('login_failed_user_suspended', 'auth', $data);
             case 3:
-                return $loginfailed." '{$username}'. Most probably password did not match (id '{$reasonid}').";
+                return get_string('login_failed_wrong_password', 'auth', $data);
             case 4:
-                return $loginfailed." '{$username}'. User is locked out (id '{$reasonid}').";
+                return get_string('login_failed_user_locked', 'auth', $data);
             case 5:
-                return $loginfailed." '{$username}'. User is not authorised (id '{$reasonid}').";
+                return get_string('login_failed_user_not_authorised', 'auth', $data);
             default:
-                return $loginfailed." '{$username}' for the reason with id '{$reasonid}'.";
+                return get_string('login_failed_other', 'auth', $data);
 
         }
     }
